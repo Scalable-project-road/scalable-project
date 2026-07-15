@@ -142,17 +142,21 @@ while True:
  
             }
  
-            kinesis.put_record(
+            response = kinesis.put_record(
+
+            StreamName=STREAM_NAME,
+
+            Data=json.dumps(data),
+
+             PartitionKey=str(data.get("vehicle_id", "vehicle"))
+
+           )    
  
-                StreamName=STREAM_NAME,
+        print(response)
  
-                Data=json.dumps(data),
+        sent += 1
  
-                PartitionKey=data["vehicle_id"] or "vehicle"
  
-            )
- 
-            sent += 1
  
         print(
 
