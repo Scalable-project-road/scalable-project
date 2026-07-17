@@ -1,54 +1,134 @@
 from pyspark.sql import SparkSession
+
 from pyspark.sql.functions import avg, max, min, sum, count
  
+# ---------------------------------------------------
+
 # Create Spark Session
+
+# ---------------------------------------------------
+
 spark = (
+
     SparkSession.builder
+
     .appName("Luas Batch Layer")
+
     .config(
+
         "spark.hadoop.fs.s3a.aws.credentials.provider",
+
         "com.amazonaws.auth.InstanceProfileCredentialsProvider"
+
     )
+
     .config(
+
         "spark.hadoop.fs.s3a.impl",
+
         "org.apache.hadoop.fs.s3a.S3AFileSystem"
+
     )
+
     .getOrCreate()
+
 )
  
 spark.sparkContext.setLogLevel("WARN")
  
-print("Reading data from S3...")
+print("=" * 60)
+
+print("LUAS BATCH PROCESSING STARTED")
+
+print("=" * 60)
  
+# ---------------------------------------------------
+
 # Read JSON files from S3
-df = spark.read.json("s3a://luas-analytics-project-2026/raw-data/")
+
+# ---------------------------------------------------
+
+INPUT_PATH = "s3a://lambda-batch-data/raw/"
+
+OUTPUT_PATH = "s3a://lambda-batch-data/processed/"
  
-print("Number of records:", df.count())
+print(f"Reading data from: {INPUT_PATH}")
  
+df = spark.read.option("multiLine", "true").json(INPUT_PATH)
+ 
+print(f"Total Records: {df.count()}")
+ 
+print("\nSchema:")
+
 df.printSchema()
  
-df.show(5, truncate=False)
+print("\nSample Data:")
+
+df.show(10, truncate=False)
  
-# Aggregate data
+# ---------------------------------------------------
+
+# Aggregate Data
+
+# ---------------------------------------------------
+
 result = (
+
     df.groupBy("line")
+
       .agg(
+
           count("*").alias("records"),
+
           sum("passenger_journeys").alias("total_passengers"),
+
           avg("passenger_journeys").alias("average_passengers"),
+
           max("passenger_journeys").alias("maximum_passengers"),
+
           min("passenger_journeys").alias("minimum_passengers")
+
       )
+
+      .orderBy("line")
+
 )
  
-print("Batch Results")
-result.show()
+print("=" * 60)
+
+print("BATCH RESULTS")
+
+print("=" * 60)
  
-# Write results to S3
-result.write.mode("overwrite").json(
-    "s3a://luas-analytics-project-2026/batch-results/"
+result.show(truncate=False)
+ 
+# ---------------------------------------------------
+
+# Save Results
+
+# ---------------------------------------------------
+
+print(f"Writing results to: {OUTPUT_PATH}")
+ 
+(
+
+    result
+
+    .coalesce(1)
+
+    .write
+
+    .mode("overwrite")
+
+    .json(OUTPUT_PATH)
+
 )
  
-print("Results written successfully.")
+print("=" * 60)
+
+print("BATCH PROCESS COMPLETED SUCCESSFULLY")
+
+print("=" * 60)
  
 spark.stop()
+ 
