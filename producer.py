@@ -1,34 +1,34 @@
+import boto3
+
 import json
 
 import time
 
 import requests
+ 
+# =====================================================
 
-import boto3
- 
-from google.transit import gtfs_realtime_pb2
- 
-# -----------------------------
+# AWS Configuration
 
-# Configuration
-
-# -----------------------------
- 
-API_KEY = "339f2d300f51462e9f7508a2e0f3f518"
- 
-GTFS_URL = "https://api.nationaltransport.ie/gtfsr/v2/vehicles"
+# =====================================================
  
 REGION = "us-east-1"
  
-STREAM_NAME = "luas-stream"
- 
-# -----------------------------
+BATCH_STREAM = "luas-stream"
 
-# AWS
-
-# -----------------------------
+SPEED_STREAM = "luas-speed-stream"
  
-kinesis = boto3.client(
+S3_BUCKET = "lambda-batch-data"
+
+S3_PREFIX = "raw"
+ 
+# =====================================================
+
+# AWS Clients
+
+# =====================================================
+ 
+kinesis_client = boto3.client(
 
     "kinesis",
 
@@ -36,139 +36,212 @@ kinesis = boto3.client(
 
 )
  
-headers = {
+s3_client = boto3.client(
 
-    "x-api-key": API_KEY
+    "s3",
 
-}
+    region_name=REGION
+
+)
  
-print("=" * 60)
+# =====================================================
 
-print("TFI GTFS Producer Started")
+# Dataset
 
-print("=" * 60)
+# =====================================================
  
-while True:
+CSO_ENDPOINT_URL = (
+
+    "https://ws.cso.ie/public/api.restful/"
+
+    "PxStat.Data.Cube_API.ReadDataset/"
+
+    "TII03/JSON-stat/1.0/en"
+
+)
+ 
+# =====================================================
+
+# Producer
+
+# =====================================================
+ 
+def start_luas_stream():
  
     try:
  
-        response = requests.get(
+        print("=" * 70)
 
-            GTFS_URL,
+        print("Connecting to CSO JSON-stat API...")
 
-            headers=headers,
-
-            timeout=30
-
-        )
+        print("=" * 70)
+ 
+        response = requests.get(CSO_ENDPOINT_URL)
  
         if response.status_code != 200:
- 
-            print(
 
-                "API Error:",
+            print("Unable to download dataset.")
 
-                response.status_code,
+            return
+ 
+        json_data = response.json()
+ 
+        dataset = json_data["dataset"]
+ 
+        weeks = dataset["dimension"]["TLIST(W1)"]["category"]["label"]
 
-                response.text
+        weeks_list = list(weeks.values())
+ 
+        lines = dataset["dimension"]["C03132V03784"]["category"]["label"]
 
-            )
+        lines_list = list(lines.values())
  
-            time.sleep(5)
+        values = dataset["value"]
  
-            continue
- 
-        feed = gtfs_realtime_pb2.FeedMessage()
- 
-        feed.ParseFromString(response.content)
- 
-        print(
+        print(f"Loaded {len(values)} records.")
 
-            f"\nDownloaded {len(feed.entity)} vehicle records"
+        print("Streaming continuously...\n")
+ 
+        while True:
+ 
+            idx = 0
+ 
+            print("=" * 70)
 
-        )
- 
-        sent = 0
- 
-        for entity in feed.entity:
- 
-            if not entity.HasField("vehicle"):
- 
-                continue
- 
-            vehicle = entity.vehicle
- 
-            data = {
- 
-                "vehicle_id":
+            print("Starting New Streaming Cycle")
 
-                    vehicle.vehicle.id
-
-                    if vehicle.vehicle.id else "",
+            print("=" * 70)
  
-                "trip_id":
-
-                    vehicle.trip.trip_id
-
-                    if vehicle.trip.trip_id else "",
+            for week in weeks_list:
  
-                "route_id":
-
-                    vehicle.trip.route_id
-
-                    if vehicle.trip.route_id else "",
+                for line in lines_list:
  
-                "latitude":
+                    if line == "All Luas lines":
 
-                    vehicle.position.latitude,
- 
-                "longitude":
+                        idx += 1
 
-                    vehicle.position.longitude,
+                        continue
  
-                "bearing":
+                    journeys = values[idx]
+ 
+                    if journeys is None:
 
-                    vehicle.position.bearing,
- 
-                "speed":
+                        journeys = 0
 
-                    vehicle.position.speed,
- 
-                "timestamp":
+                    else:
 
-                    int(vehicle.timestamp)
+                        journeys = int(journeys)
+ 
+                    payload = {
 
-                    if vehicle.timestamp else 0
- 
-            }
- 
-            response = kinesis.put_record(
+                        "statistic": "Passenger Journeys",
 
-            StreamName=STREAM_NAME,
+                        "week": str(week),
 
-            Data=json.dumps(data),
+                        "line": str(line),
 
-             PartitionKey=str(data.get("vehicle_id", "vehicle"))
+                        "passenger_journeys": journeys,
 
-           )    
- 
-        print(response)
- 
-        sent += 1
- 
- 
- 
-        print(
+                        "timestamp": int(time.time())
 
-            f"Sent {sent} records to Kinesis"
-
-        )
+                    }
  
-        time.sleep(10)
+                    json_payload = json.dumps(payload)
+ 
+                    # ==================================
+
+                    # Send to Batch Kinesis Stream
+
+                    # ==================================
+ 
+                    kinesis_client.put_record(
+
+                        StreamName=BATCH_STREAM,
+
+                        Data=json_payload,
+
+                        PartitionKey=payload["line"]
+
+                    )
+ 
+                    # ==================================
+
+                    # Send to Speed Kinesis Stream
+
+                    # ==================================
+ 
+                    kinesis_client.put_record(
+
+                        StreamName=SPEED_STREAM,
+
+                        Data=json_payload,
+
+                        PartitionKey=payload["line"]
+
+                    )
+ 
+                    # ==================================
+
+                    # Store Raw Record in S3
+
+                    # ==================================
+ 
+                    filename = (
+
+                        f"{S3_PREFIX}/"
+
+                        f"{payload['week']}_"
+
+                        f"{payload['line'].replace(' ','_')}_"
+
+                        f"{payload['timestamp']}.json"
+
+                    )
+ 
+                    s3_client.put_object(
+
+                        Bucket=S3_BUCKET,
+
+                        Key=filename,
+
+                        Body=json_payload,
+
+                        ContentType="application/json"
+
+                    )
+ 
+                    print(
+
+                        f"Week: {payload['week']} | "
+
+                        f"Line: {payload['line']} | "
+
+                        f"Passengers: {payload['passenger_journeys']} | "
+
+                        f"Kinesis ✓ | S3 ✓"
+
+                    )
+ 
+                    idx += 1
+ 
+                    time.sleep(1)
+ 
+            print("\nDataset completed.")
+
+            print("Restarting...\n")
+ 
+            time.sleep(2)
+ 
+    except KeyboardInterrupt:
+
+        print("\nProducer stopped.")
  
     except Exception as e:
- 
+
         print("Error:", e)
  
-        time.sleep(5)
+ 
+if __name__ == "__main__":
+
+    start_luas_stream()
  
