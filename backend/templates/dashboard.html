@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+ 
+    <meta charset="UTF-8">
+ 
+    <title>Luas Passenger Analytics Dashboard</title>
+ 
+    <link rel="stylesheet" href="/static/style.css">
+ 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+ 
+</head>
+ 
+<body>
+ 
+<div class="container">
+ 
+<header>
+ 
+<h1>🚋 Luas Passenger Analytics Dashboard</h1>
+ 
+<p id="lastUpdated">
+
+Last Updated: Loading...
+</p>
+ 
+<div class="status">
+<span class="online">🟢 Backend Online</span>
+</div>
+ 
+<div class="status-panel">
+ 
+<span>🟢 Batch API</span>
+ 
+<span>🟢 Realtime API</span>
+ 
+<span>🟢 Comparison API</span>
+ 
+</div>
+ 
+</header>
+ 
+ 
+<div class="summary-cards">
+ 
+<div class="summary-card">
+ 
+<h3>Batch Records</h3>
+ 
+<p id="batchRecords">0</p>
+ 
+</div>
+ 
+<div class="summary-card">
+ 
+<h3>Realtime Records</h3>
+ 
+<p id="realtimeRecords">0</p>
+ 
+</div>
+ 
+<div class="summary-card">
+ 
+<h3>Batch Total</h3>
+ 
+<p id="batchTotal">0</p>
+ 
+</div>
+ 
+<div class="summary-card">
+ 
+<h3>Realtime Total</h3>
+ 
+<p id="realtimeTotal">0</p>
+ 
+</div>
+ 
+<div class="summary-card">
+ 
+<h3>Green Line</h3>
+ 
+<p id="greenRealtime">0</p>
+ 
+</div>
+ 
+<div class="summary-card">
+ 
+<h3>Red Line</h3>
+ 
+<p id="redRealtime">0</p>
+ 
+</div>
+ 
+</div>
+ 
+ 
+<div class="cards">
+ 
+<div class="card">
+ 
+<h2>Batch Layer</h2>
+ 
+<canvas id="batchChart"></canvas>
+ 
+<div id="batchData"></div>
+ 
+</div>
+ 
+ 
+<div class="card">
+ 
+<h2>Realtime Layer</h2>
+ 
+<canvas id="realtimeChart"></canvas>
+ 
+<div id="realtimeData"></div>
+ 
+</div>
+ 
+ 
+<div class="card">
+ 
+<h2>Comparison</h2>
+ 
+<canvas id="comparisonChart"></canvas>
+ 
+<div id="comparisonData"></div>
+ 
+</div>
+ 
+</div>
+ 
+</div>
+ 
+<script src="/static/dashboard.js"></script>
+ 
+</body>
+ 
+</html>
+ 
