@@ -3,8 +3,6 @@
  
 <head>
  
-    <meta charset="UTF-8">
- 
     <title>Luas Passenger Analytics Dashboard</title>
  
     <link rel="stylesheet" href="/static/style.css">
@@ -17,120 +15,101 @@
  
 <div class="container">
  
-<header>
+    <h1>🚌 Luas Passenger Analytics Dashboard</h1>
  
-<h1>🚋 Luas Passenger Analytics Dashboard</h1>
+    <div class="status">
  
-<p id="lastUpdated">
-
-Last Updated: Loading...
-</p>
+        <p id="lastUpdated">Last Updated: Loading...</p>
  
-<div class="status">
-<span class="online">🟢 Backend Online</span>
-</div>
+        <h2 style="color:green;">🟢 Backend Online</h2>
  
-<div class="status-panel">
+        <div class="apis">
  
-<span>🟢 Batch API</span>
+            <span id="batchStatus">🟢 Batch API</span>
  
-<span>🟢 Realtime API</span>
+            <span id="realStatus">🟢 Realtime API</span>
  
-<span>🟢 Comparison API</span>
+            <span id="compareStatus">🟢 Comparison API</span>
  
-</div>
+        </div>
  
-</header>
+    </div>
  
+    <div class="kpis">
  
-<div class="summary-cards">
- 
-<div class="summary-card">
- 
+        <div class="kpi">
 <h3>Batch Records</h3>
- 
-<p id="batchRecords">0</p>
- 
+<h1 id="batchRecords">0</h1>
 </div>
  
-<div class="summary-card">
- 
+        <div class="kpi">
 <h3>Realtime Records</h3>
- 
-<p id="realtimeRecords">0</p>
- 
+<h1 id="realtimeRecords">0</h1>
 </div>
  
-<div class="summary-card">
- 
+        <div class="kpi">
 <h3>Batch Total</h3>
- 
-<p id="batchTotal">0</p>
- 
+<h1 id="batchTotal">0</h1>
 </div>
  
-<div class="summary-card">
- 
+        <div class="kpi">
 <h3>Realtime Total</h3>
- 
-<p id="realtimeTotal">0</p>
- 
+<h1 id="realtimeTotal">0</h1>
 </div>
  
-<div class="summary-card">
- 
+        <div class="kpi">
 <h3>Green Line</h3>
- 
-<p id="greenRealtime">0</p>
- 
+<h1 id="greenTotal">0</h1>
 </div>
  
-<div class="summary-card">
- 
+        <div class="kpi">
 <h3>Red Line</h3>
- 
-<p id="redRealtime">0</p>
- 
+<h1 id="redTotal">0</h1>
 </div>
  
-</div>
+    </div>
  
+    <div class="cards">
  
-<div class="cards">
+        <div class="card">
  
-<div class="card">
+            <h2>Batch Layer</h2>
  
-<h2>Batch Layer</h2>
+            <canvas id="batchChart"></canvas>
  
-<canvas id="batchChart"></canvas>
+            <div id="batchText"></div>
  
-<div id="batchData"></div>
+        </div>
  
-</div>
+        <div class="card">
  
+            <h2>Realtime Layer</h2>
  
-<div class="card">
+            <canvas id="realtimeChart"></canvas>
  
-<h2>Realtime Layer</h2>
+            <div id="realtimeText"></div>
  
-<canvas id="realtimeChart"></canvas>
+        </div>
  
-<div id="realtimeData"></div>
+        <div class="card">
  
-</div>
+            <h2>Comparison</h2>
  
+            <canvas id="comparisonChart"></canvas>
  
-<div class="card">
+            <div id="comparisonText"></div>
  
-<h2>Comparison</h2>
+        </div>
  
-<canvas id="comparisonChart"></canvas>
+    </div>
  
-<div id="comparisonData"></div>
+    <div class="footer">
  
-</div>
+        <h3>AWS Services Used</h3>
  
-</div>
+        <p>EC2 • EMR • Spark • Kinesis • S3 • Flask</p>
+ 
+    </div>
  
 </div>
  
