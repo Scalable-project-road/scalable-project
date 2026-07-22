@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
  
 <head>
+ 
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
  
     <title>Luas Passenger Analytics Dashboard</title>
  
@@ -15,65 +18,135 @@
  
 <div class="container">
  
-    <h1>🚌 Luas Passenger Analytics Dashboard</h1>
+    <!-- ================= HEADER ================= -->
  
-    <div class="status">
+    <header class="header">
  
-        <p id="lastUpdated">Last Updated: Loading...</p>
+        <h1>🚋 Luas Passenger Analytics Dashboard</h1>
  
-        <h2 style="color:green;">🟢 Backend Online</h2>
+        <p class="subtitle">
+
+            Cloud-Based Real-Time Passenger Analytics using AWS Lambda Architecture
+</p>
  
-        <div class="apis">
+        <div class="top-info">
  
-            <span id="batchStatus">🟢 Batch API</span>
+            <div id="lastUpdated">
+
+                Last Updated : Loading...
+</div>
  
-            <span id="realStatus">🟢 Realtime API</span>
- 
-            <span id="compareStatus">🟢 Comparison API</span>
+            <div id="refreshCountdown">
+
+                Refreshing in 10s
+</div>
  
         </div>
  
-    </div>
+    </header>
  
-    <div class="kpis">
+    <!-- ================= STATUS ================= -->
  
-        <div class="kpi">
-<h3>Batch Records</h3>
-<h1 id="batchRecords">0</h1>
+    <section class="status-panel">
+ 
+        <div class="status-card online">
+
+            🟢 Backend Online
 </div>
  
-        <div class="kpi">
-<h3>Realtime Records</h3>
-<h1 id="realtimeRecords">0</h1>
+        <div class="status-card">
+
+            🟢 Batch API
 </div>
  
-        <div class="kpi">
-<h3>Batch Total</h3>
-<h1 id="batchTotal">0</h1>
+        <div class="status-card">
+
+            🟢 Realtime API
 </div>
  
-        <div class="kpi">
-<h3>Realtime Total</h3>
-<h1 id="realtimeTotal">0</h1>
+        <div class="status-card">
+
+            🟢 Comparison API
 </div>
  
-        <div class="kpi">
-<h3>Green Line</h3>
-<h1 id="greenTotal">0</h1>
+        <div class="status-card">
+
+            🟢 Amazon S3
 </div>
  
-        <div class="kpi">
-<h3>Red Line</h3>
-<h1 id="redTotal">0</h1>
+        <div class="status-card">
+
+            🟢 Amazon Kinesis
 </div>
  
-    </div>
+        <div class="status-card">
+
+            🟢 Spark EMR
+</div>
  
-    <div class="cards">
+    </section>
+ 
+    <!-- ================= KPI CARDS ================= -->
+ 
+    <section class="kpi-grid">
+ 
+        <div class="kpi-card">
+ 
+            <h3>📊 Batch Records</h3>
+ 
+            <h1 id="batchRecords">0</h1>
+ 
+        </div>
+ 
+        <div class="kpi-card">
+ 
+            <h3>⚡ Realtime Records</h3>
+ 
+            <h1 id="realtimeRecords">0</h1>
+ 
+        </div>
+ 
+        <div class="kpi-card">
+ 
+            <h3>📁 Batch Total</h3>
+ 
+            <h1 id="batchTotal">0</h1>
+ 
+        </div>
+ 
+        <div class="kpi-card">
+ 
+            <h3>🔥 Realtime Total</h3>
+ 
+            <h1 id="realtimeTotal">0</h1>
+ 
+        </div>
+ 
+        <div class="kpi-card">
+ 
+            <h3>🟢 Green Line</h3>
+ 
+            <h1 id="greenTotal">0</h1>
+ 
+        </div>
+ 
+        <div class="kpi-card">
+ 
+            <h3>🔴 Red Line</h3>
+ 
+            <h1 id="redTotal">0</h1>
+ 
+        </div>
+ 
+    </section>
+ 
+    <!-- ================= CHARTS ================= -->
+ 
+    <section class="chart-grid">
  
         <div class="card">
  
-            <h2>Batch Layer</h2>
+            <h2>Batch Analytics</h2>
  
             <canvas id="batchChart"></canvas>
  
@@ -83,7 +156,7 @@
  
         <div class="card">
  
-            <h2>Realtime Layer</h2>
+            <h2>Realtime Analytics</h2>
  
             <canvas id="realtimeChart"></canvas>
  
@@ -91,9 +164,9 @@
  
         </div>
  
-        <div class="card">
+        <div class="card comparison-card">
  
-            <h2>Comparison</h2>
+            <h2>Batch vs Realtime Comparison</h2>
  
             <canvas id="comparisonChart"></canvas>
  
@@ -101,15 +174,145 @@
  
         </div>
  
-    </div>
+    </section>
  
-    <div class="footer">
+    <!-- ================= INFORMATION PANELS ================= -->
  
-        <h3>AWS Services Used</h3>
+    <section class="info-grid">
  
-        <p>EC2 • EMR • Spark • Kinesis • S3 • Flask</p>
+        <div class="info-card">
  
-    </div>
+            <h2>☁ AWS Architecture</h2>
+ 
+            <div class="architecture-flow">
+ 
+                Producer
+ 
+                ↓
+ 
+                Amazon Kinesis
+ 
+                ↓
+ 
+                Spark / EMR
+ 
+                ↓
+ 
+                Amazon S3
+ 
+                ↓
+ 
+                Flask REST APIs
+ 
+                ↓
+ 
+                Analytics Dashboard
+ 
+            </div>
+ 
+        </div>
+ 
+        <div class="info-card">
+ 
+            <h2>📈 Processing Statistics</h2>
+ 
+            <table>
+ 
+                <tr>
+ 
+                    <td>Batch Records</td>
+ 
+                    <td id="batchRecords2">0</td>
+ 
+                </tr>
+ 
+                <tr>
+ 
+                    <td>Realtime Records</td>
+ 
+                    <td id="realtimeRecords2">0</td>
+ 
+                </tr>
+ 
+                <tr>
+ 
+                    <td>Green Total</td>
+ 
+                    <td id="greenTotal2">0</td>
+ 
+                </tr>
+ 
+                <tr>
+ 
+                    <td>Red Total</td>
+ 
+                    <td id="redTotal2">0</td>
+ 
+                </tr>
+ 
+                <tr>
+ 
+                    <td>Window Size</td>
+ 
+                    <td>10 Seconds</td>
+ 
+                </tr>
+ 
+            </table>
+ 
+        </div>
+ 
+    </section>
+ 
+    <!-- ================= DATASET ================= -->
+ 
+    <section class="dataset-card">
+ 
+        <h2>📁 Dataset Information</h2>
+ 
+        <ul>
+ 
+            <li><strong>Dataset</strong> : TFI Luas Passenger Dataset</li>
+ 
+            <li><strong>Processing</strong> : Apache Spark on Amazon EMR</li>
+ 
+            <li><strong>Streaming</strong> : Amazon Kinesis Data Streams</li>
+ 
+            <li><strong>Storage</strong> : Amazon S3</li>
+ 
+            <li><strong>Backend</strong> : Flask REST API</li>
+ 
+            <li><strong>Architecture</strong> : Lambda Architecture</li>
+ 
+        </ul>
+ 
+    </section>
+ 
+    <!-- ================= FOOTER ================= -->
+ 
+    <footer>
+ 
+        <h2>Cloud-Based Real-Time Passenger Analytics System</h2>
+ 
+        <p>
+ 
+            Python • Apache Spark • Amazon EMR • Amazon EC2 • Amazon S3 • Amazon Kinesis • Flask • Chart.js
+ 
+        </p>
+ 
+        <p>
+ 
+            National College of Ireland • MSc Cloud Computing
+ 
+        </p>
+ 
+        <p>
+ 
+            2026
+ 
+        </p>
+ 
+    </footer>
  
 </div>
  

@@ -1,152 +1,1153 @@
+/* ==========================================================
+   LUAS PASSENGER ANALYTICS DASHBOARD
+   Professional Dashboard UI
+   Author: ChatGPT
+========================================================== */
+ 
+/* ===========================
+   RESET
+=========================== */
+ 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+ 
+html{
+    scroll-behavior:smooth;
+}
+ 
 body{
  
-background:#eef3f9;
+    font-family:Arial, Helvetica, sans-serif;
  
-font-family:Arial,Helvetica,sans-serif;
+    background:#eef3f9;
  
-margin:0;
+    color:#243b55;
  
-padding:30px;
+    padding:30px;
  
 }
+ 
+/* ===========================
+   CONTAINER
+=========================== */
  
 .container{
  
-width:95%;
+    width:95%;
  
-margin:auto;
+    max-width:1500px;
  
-}
- 
-h1{
- 
-text-align:center;
- 
-color:#23395d;
- 
-margin-bottom:20px;
+    margin:auto;
  
 }
  
-.status{
+/* ===========================
+   HEADER
+=========================== */
  
-text-align:center;
+.header{
  
-margin-bottom:30px;
+    text-align:center;
  
-}
- 
-.apis span{
- 
-margin:10px;
- 
-font-weight:bold;
- 
-color:green;
+    margin-bottom:30px;
  
 }
  
-.kpis{
+.header h1{
  
-display:grid;
+    font-size:42px;
  
-grid-template-columns:repeat(6,1fr);
+    color:#16355f;
  
-gap:20px;
- 
-margin-bottom:30px;
+    margin-bottom:10px;
  
 }
  
-.kpi{
+.subtitle{
  
-background:white;
+    color:#6c7a89;
  
-padding:20px;
+    font-size:18px;
  
-border-radius:15px;
- 
-box-shadow:0 5px 15px rgba(0,0,0,.15);
- 
-text-align:center;
- 
-transition:.3s;
+    margin-bottom:20px;
  
 }
  
-.kpi:hover{
+.top-info{
  
-transform:translateY(-5px);
+    display:flex;
+ 
+    justify-content:space-between;
+ 
+    align-items:center;
+ 
+    flex-wrap:wrap;
+ 
+    gap:20px;
+ 
+    background:white;
+ 
+    border-radius:15px;
+ 
+    padding:18px 25px;
+ 
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
  
 }
  
-.kpi h1{
+#lastUpdated{
  
-color:#2b5fd9;
+    font-size:17px;
  
-font-size:42px;
+    font-weight:bold;
  
 }
  
-.cards{
+#refreshCountdown{
  
-display:grid;
+    color:#1565c0;
  
-grid-template-columns:repeat(3,1fr);
+    font-weight:bold;
  
-gap:25px;
+}
+ 
+/* ===========================
+   STATUS
+=========================== */
+ 
+.status-panel{
+ 
+    display:grid;
+ 
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+ 
+    gap:15px;
+ 
+    margin:30px 0;
+ 
+}
+ 
+.status-card{
+ 
+    background:white;
+ 
+    padding:16px;
+ 
+    text-align:center;
+ 
+    border-radius:12px;
+ 
+    border-left:6px solid #2ecc71;
+ 
+    box-shadow:0 5px 15px rgba(0,0,0,.10);
+ 
+    transition:.3s;
+ 
+    font-weight:bold;
+ 
+}
+ 
+.status-card:hover{
+ 
+    transform:translateY(-5px);
+ 
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+ 
+}
+ 
+.online{
+ 
+    border-left:6px solid #27ae60;
+ 
+}
+ 
+/* ===========================
+   KPI SECTION
+=========================== */
+ 
+.kpi-grid{
+ 
+    display:grid;
+ 
+    grid-template-columns:repeat(6,1fr);
+ 
+    gap:20px;
+ 
+    margin-bottom:35px;
+ 
+}
+ 
+.kpi-card{
+ 
+    background:white;
+ 
+    border-radius:16px;
+ 
+    padding:25px;
+ 
+    text-align:center;
+ 
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+ 
+    transition:.35s;
+ 
+    border-top:5px solid #2b5fd9;
+ 
+}
+ 
+.kpi-card:hover{
+ 
+    transform:translateY(-8px);
+ 
+    box-shadow:0 15px 30px rgba(0,0,0,.18);
+ 
+}
+ 
+.kpi-card h3{
+ 
+    margin-bottom:15px;
+ 
+    font-size:20px;
+ 
+    color:#34495e;
+ 
+}
+ 
+.kpi-card h1{
+ 
+    font-size:46px;
+ 
+    color:#1d4ed8;
+ 
+}
+ 
+.kpi-card:nth-child(1){
+ 
+    border-top-color:#1565c0;
+ 
+}
+ 
+.kpi-card:nth-child(2){
+ 
+    border-top-color:#8e44ad;
+ 
+}
+ 
+.kpi-card:nth-child(3){
+ 
+    border-top-color:#16a085;
+ 
+}
+ 
+.kpi-card:nth-child(4){
+ 
+    border-top-color:#f39c12;
+ 
+}
+ 
+.kpi-card:nth-child(5){
+ 
+    border-top-color:#2ecc71;
+ 
+}
+ 
+.kpi-card:nth-child(6){
+ 
+    border-top-color:#e74c3c;
+ 
+}
+/* ==========================================================
+   CHART SECTION
+========================================================== */
+ 
+.chart-grid{
+ 
+    display:grid;
+ 
+    grid-template-columns:repeat(auto-fit,minmax(400px,1fr));
+ 
+    gap:25px;
+ 
+    margin-bottom:35px;
  
 }
  
 .card{
  
-background:white;
+    background:#ffffff;
  
-padding:25px;
+    border-radius:18px;
  
-border-radius:15px;
+    padding:25px;
  
-box-shadow:0 5px 15px rgba(0,0,0,.15);
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+ 
+    transition:all .3s ease;
+ 
+    position:relative;
+ 
+    overflow:hidden;
+ 
+}
+ 
+.card:hover{
+ 
+    transform:translateY(-6px);
+ 
+    box-shadow:0 16px 30px rgba(0,0,0,.18);
+ 
+}
+ 
+.card::before{
+ 
+    content:"";
+ 
+    position:absolute;
+ 
+    top:0;
+ 
+    left:0;
+ 
+    width:100%;
+ 
+    height:5px;
+ 
+    background:linear-gradient(90deg,#1565c0,#42a5f5);
+ 
+}
+ 
+.card h2{
+ 
+    text-align:center;
+ 
+    color:#16355f;
+ 
+    margin-bottom:20px;
+ 
+    font-size:24px;
  
 }
  
 canvas{
  
-width:100%;
+    width:100% !important;
  
-height:300px;
+    height:320px !important;
+ 
+}
+ 
+#batchText,
+#realtimeText,
+#comparisonText{
+ 
+    margin-top:18px;
+ 
+    text-align:center;
+ 
+    color:#607d8b;
+ 
+    font-size:15px;
  
 }
  
-.footer{
+/* ==========================================================
+   INFORMATION GRID
+========================================================== */
  
-margin-top:40px;
+.info-grid{
  
-text-align:center;
+    display:grid;
  
-padding:20px;
+    grid-template-columns:repeat(auto-fit,minmax(500px,1fr));
  
-background:white;
+    gap:25px;
  
-border-radius:15px;
- 
-box-shadow:0 5px 15px rgba(0,0,0,.15);
+    margin-bottom:35px;
  
 }
+ 
+/* ==========================================================
+   INFO CARD
+========================================================== */
+ 
+.info-card{
+ 
+    background:white;
+ 
+    border-radius:18px;
+ 
+    padding:28px;
+ 
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+ 
+}
+ 
+.info-card h2{
+ 
+    color:#16355f;
+ 
+    margin-bottom:20px;
+ 
+    text-align:center;
+ 
+}
+ 
+/* ==========================================================
+   AWS ARCHITECTURE
+========================================================== */
+ 
+.architecture-flow{
+ 
+    display:flex;
+ 
+    flex-direction:column;
+ 
+    align-items:center;
+ 
+    justify-content:center;
+ 
+    gap:14px;
+ 
+    margin-top:20px;
+ 
+    font-size:18px;
+ 
+    font-weight:bold;
+ 
+}
+ 
+.architecture-flow div{
+ 
+    width:260px;
+ 
+    background:#eaf4ff;
+ 
+    padding:12px;
+ 
+    border-radius:10px;
+ 
+    text-align:center;
+ 
+    color:#1565c0;
+ 
+    box-shadow:0 4px 10px rgba(0,0,0,.08);
+ 
+}
+ 
+.architecture-flow .arrow{
+ 
+    font-size:28px;
+ 
+    color:#1565c0;
+ 
+}
+ 
+/* ==========================================================
+   PROCESSING TABLE
+========================================================== */
+ 
+table{
+ 
+    width:100%;
+ 
+    border-collapse:collapse;
+ 
+    margin-top:15px;
+ 
+}
+ 
+table tr{
+ 
+    transition:.2s;
+ 
+}
+ 
+table tr:hover{
+ 
+    background:#f8fbff;
+ 
+}
+ 
+table td{
+ 
+    padding:15px;
+ 
+    border-bottom:1px solid #e6ecf2;
+ 
+    font-size:17px;
+ 
+}
+ 
+table td:first-child{
+ 
+    font-weight:bold;
+ 
+    color:#34495e;
+ 
+}
+ 
+table td:last-child{
+ 
+    text-align:right;
+ 
+    color:#1565c0;
+ 
+    font-weight:bold;
+ 
+}
+ 
+/* ==========================================================
+   DATASET INFORMATION
+========================================================== */
+ 
+.dataset-card{
+ 
+    background:white;
+ 
+    border-radius:18px;
+ 
+    padding:28px;
+ 
+    margin-bottom:35px;
+ 
+    box-shadow:0 8px 20px rgba(0,0,0,.10);
+ 
+}
+ 
+.dataset-card h2{
+ 
+    text-align:center;
+ 
+    margin-bottom:20px;
+ 
+    color:#16355f;
+ 
+}
+ 
+.dataset-card ul{
+ 
+    list-style:none;
+ 
+}
+ 
+.dataset-card li{
+ 
+    background:#f8fbff;
+ 
+    margin-bottom:12px;
+ 
+    padding:14px 18px;
+ 
+    border-left:5px solid #1565c0;
+ 
+    border-radius:10px;
+ 
+    font-size:17px;
+ 
+    transition:.2s;
+ 
+}
+ 
+.dataset-card li:hover{
+ 
+    background:#edf6ff;
+ 
+    transform:translateX(5px);
+ 
+}
+/* ==========================================================
+   FOOTER
+========================================================== */
+ 
+footer{
+ 
+    margin-top:40px;
+ 
+    background:#1f3c5c;
+ 
+    color:white;
+ 
+    border-radius:18px;
+ 
+    padding:35px;
+ 
+    text-align:center;
+ 
+    box-shadow:0 8px 20px rgba(0,0,0,.18);
+ 
+}
+ 
+footer h2{
+ 
+    margin-bottom:15px;
+ 
+    font-size:28px;
+ 
+}
+ 
+footer p{
+ 
+    margin:8px 0;
+ 
+    color:#d7e4f3;
+ 
+    font-size:17px;
+ 
+}
+ 
+/* ==========================================================
+   LOADING ANIMATION
+========================================================== */
+ 
+.loading{
+ 
+    width:45px;
+ 
+    height:45px;
+ 
+    border:5px solid #e6ecf2;
+ 
+    border-top:5px solid #1565c0;
+ 
+    border-radius:50%;
+ 
+    animation:spin 1s linear infinite;
+ 
+    margin:auto;
+ 
+}
+ 
+@keyframes spin{
+ 
+    0%{
+ 
+        transform:rotate(0deg);
+ 
+    }
+ 
+    100%{
+ 
+        transform:rotate(360deg);
+ 
+    }
+ 
+}
+ 
+/* ==========================================================
+   FADE ANIMATION
+========================================================== */
+ 
+.fade-in{
+ 
+    animation:fadeIn .8s ease-in-out;
+ 
+}
+ 
+@keyframes fadeIn{
+ 
+    from{
+ 
+        opacity:0;
+ 
+        transform:translateY(20px);
+ 
+    }
+ 
+    to{
+ 
+        opacity:1;
+ 
+        transform:translateY(0);
+ 
+    }
+ 
+}
+ 
+/* ==========================================================
+   STATUS BADGES
+========================================================== */
+ 
+.badge{
+ 
+    display:inline-block;
+ 
+    padding:8px 14px;
+ 
+    border-radius:25px;
+ 
+    font-size:14px;
+ 
+    font-weight:bold;
+ 
+    color:white;
+ 
+}
+ 
+.badge-success{
+ 
+    background:#27ae60;
+ 
+}
+ 
+.badge-warning{
+ 
+    background:#f39c12;
+ 
+}
+ 
+.badge-danger{
+ 
+    background:#e74c3c;
+ 
+}
+ 
+.badge-info{
+ 
+    background:#1565c0;
+ 
+}
+ 
+/* ==========================================================
+   PROGRESS BAR
+========================================================== */
+ 
+.progress{
+ 
+    width:100%;
+ 
+    background:#e6ecf2;
+ 
+    height:12px;
+ 
+    border-radius:30px;
+ 
+    overflow:hidden;
+ 
+    margin-top:10px;
+ 
+}
+ 
+.progress-bar{
+ 
+    height:100%;
+ 
+    background:linear-gradient(90deg,#1565c0,#42a5f5);
+ 
+    width:0%;
+ 
+    transition:width .6s ease;
+ 
+}
+ 
+/* ==========================================================
+   KPI NUMBER ANIMATION
+========================================================== */
+ 
+.kpi-card h1{
+ 
+    transition:.4s;
+ 
+}
+ 
+.kpi-card:hover h1{
+ 
+    transform:scale(1.08);
+ 
+}
+ 
+/* ==========================================================
+   CARD HEADER ICON
+========================================================== */
+ 
+.card h2::before{
+ 
+    content:"📊 ";
+ 
+}
+ 
+.info-card h2::before{
+ 
+    content:"☁ ";
+ 
+}
+ 
+.dataset-card h2::before{
+ 
+    content:"📁 ";
+ 
+}
+ 
+/* ==========================================================
+   SCROLLBAR
+========================================================== */
+ 
+::-webkit-scrollbar{
+ 
+    width:10px;
+ 
+}
+ 
+::-webkit-scrollbar-track{
+ 
+    background:#eef3f9;
+ 
+}
+ 
+::-webkit-scrollbar-thumb{
+ 
+    background:#1565c0;
+ 
+    border-radius:20px;
+ 
+}
+ 
+::-webkit-scrollbar-thumb:hover{
+ 
+    background:#0d47a1;
+ 
+}
+ 
+/* ==========================================================
+   LINK STYLES
+========================================================== */
+ 
+a{
+ 
+    color:#1565c0;
+ 
+    text-decoration:none;
+ 
+    transition:.3s;
+ 
+}
+ 
+a:hover{
+ 
+    color:#0d47a1;
+ 
+}
+ 
+/* ==========================================================
+   UTILITY CLASSES
+========================================================== */
+ 
+.text-center{
+ 
+    text-align:center;
+ 
+}
+ 
+.mt-20{
+ 
+    margin-top:20px;
+ 
+}
+ 
+.mt-30{
+ 
+    margin-top:30px;
+ 
+}
+ 
+.mb-20{
+ 
+    margin-bottom:20px;
+ 
+}
+ 
+.shadow{
+ 
+    box-shadow:0 8px 20px rgba(0,0,0,.12);
+ 
+}
+ 
+.rounded{
+ 
+    border-radius:15px;
+ 
+}
+ 
+/* ==========================================================
+   TABLET RESPONSIVE
+========================================================== */
  
 @media(max-width:1200px){
  
-.kpis{
+    .kpi-grid{
  
-grid-template-columns:repeat(2,1fr);
+        grid-template-columns:repeat(3,1fr);
+ 
+    }
+ 
+    .chart-grid{
+ 
+        grid-template-columns:1fr;
+ 
+    }
+ 
+    .info-grid{
+ 
+        grid-template-columns:1fr;
+ 
+    }
+ 
+    .top-info{
+ 
+        flex-direction:column;
+ 
+        text-align:center;
+ 
+    }
+ 
+}
+/* ==========================================================
+   MOBILE RESPONSIVE DESIGN
+========================================================== */
+ 
+@media (max-width:992px){
+ 
+    .container{
+        width:98%;
+    }
+ 
+    .header h1{
+        font-size:34px;
+    }
+ 
+    .subtitle{
+        font-size:16px;
+    }
+ 
+    .kpi-grid{
+        grid-template-columns:repeat(2,1fr);
+        gap:15px;
+    }
+ 
+    .chart-grid{
+        grid-template-columns:1fr;
+    }
+ 
+    .info-grid{
+        grid-template-columns:1fr;
+    }
+ 
+    .top-info{
+        flex-direction:column;
+        align-items:center;
+        text-align:center;
+    }
  
 }
  
-.cards{
+@media (max-width:768px){
  
-grid-template-columns:1fr;
+    body{
+        padding:15px;
+    }
+ 
+    .header h1{
+        font-size:28px;
+    }
+ 
+    .subtitle{
+        font-size:15px;
+    }
+ 
+    .status-panel{
+        grid-template-columns:1fr;
+    }
+ 
+    .kpi-grid{
+        grid-template-columns:1fr;
+    }
+ 
+    .card{
+        padding:18px;
+    }
+ 
+    .info-card,
+    .dataset-card{
+        padding:20px;
+    }
+ 
+    footer{
+        padding:25px;
+    }
+ 
+    footer h2{
+        font-size:22px;
+    }
  
 }
  
+@media (max-width:480px){
+ 
+    .header h1{
+        font-size:24px;
+    }
+ 
+    .kpi-card h1{
+        font-size:34px;
+    }
+ 
+    .kpi-card h3{
+        font-size:17px;
+    }
+ 
+    table td{
+        padding:10px;
+        font-size:15px;
+    }
+ 
 }
+ 
+/* ==========================================================
+   PRINT VIEW
+========================================================== */
+ 
+@media print{
+ 
+    body{
+ 
+        background:white;
+ 
+        padding:0;
+ 
+    }
+ 
+    .status-panel{
+ 
+        display:none;
+ 
+    }
+ 
+    footer{
+ 
+        box-shadow:none;
+ 
+        background:white;
+ 
+        color:black;
+ 
+    }
+ 
+    .card,
+    .info-card,
+    .dataset-card,
+    .kpi-card{
+ 
+        box-shadow:none;
+ 
+        border:1px solid #cccccc;
+ 
+        break-inside:avoid;
+ 
+    }
+ 
+}
+ 
+/* ==========================================================
+   OPTIONAL DARK MODE
+========================================================== */
+ 
+@media (prefers-color-scheme: dark){
+ 
+    body{
+ 
+        background:#0f172a;
+ 
+        color:#f1f5f9;
+ 
+    }
+ 
+    .card,
+    .kpi-card,
+    .status-card,
+    .info-card,
+    .dataset-card,
+    .top-info{
+ 
+        background:#1e293b;
+ 
+        color:#f8fafc;
+ 
+    }
+ 
+    .card h2,
+    .header h1,
+    .info-card h2,
+    .dataset-card h2{
+ 
+        color:#ffffff;
+ 
+    }
+ 
+    table td{
+ 
+        border-color:#334155;
+ 
+    }
+ 
+    .dataset-card li{
+ 
+        background:#273449;
+ 
+        color:white;
+ 
+    }
+ 
+    footer{
+ 
+        background:#020617;
+ 
+    }
+ 
+}
+ 
+/* ==========================================================
+   SMOOTH TRANSITIONS
+========================================================== */
+ 
+.card,
+.kpi-card,
+.status-card,
+.info-card,
+.dataset-card,
+button,
+a{
+ 
+    transition:all .30s ease;
+ 
+}
+ 
+/* ==========================================================
+   HOVER EFFECTS
+========================================================== */
+ 
+.card:hover,
+.info-card:hover,
+.dataset-card:hover{
+ 
+    transform:translateY(-6px);
+ 
+}
+ 
+.kpi-card:hover{
+ 
+    cursor:pointer;
+ 
+}
+ 
+.status-card:hover{
+ 
+    cursor:default;
+ 
+}
+ 
+/* ==========================================================
+   END OF FILE
+========================================================== */
  
