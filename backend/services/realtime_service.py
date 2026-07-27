@@ -2,7 +2,7 @@ import boto3
 
 import json
  
-BUCKET_NAME = "luas-analytics-project-2026"
+BUCKET_NAME = "lambda-batch-data"
 
 PREFIX = "speed-results/"
  

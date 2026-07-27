@@ -10,7 +10,7 @@ REGION = "us-east-1"
 
 STREAM_NAME = "luas-speed-stream"
 
-BUCKET_NAME = "luas-analytics-project-2026"
+BUCKET_NAME = "lambda-batch-data"
  
 WINDOW_SECONDS = 10
  

@@ -2,12 +2,12 @@ from pyspark.sql import SparkSession
 
 from pyspark.sql.functions import avg, max, min, sum, count
  
-# ---------------------------------------------------
+# ==========================================================
 
-# Create Spark Session
+# CREATE SPARK SESSION
 
-# ---------------------------------------------------
-
+# ==========================================================
+ 
 spark = (
 
     SparkSession.builder
@@ -42,36 +42,72 @@ print("LUAS BATCH PROCESSING STARTED")
 
 print("=" * 60)
  
-# ---------------------------------------------------
+# ==========================================================
 
-# Read JSON files from S3
+# PATHS
 
-# ---------------------------------------------------
-
+# ==========================================================
+ 
 INPUT_PATH = "s3a://lambda-batch-data/raw/"
 
 OUTPUT_PATH = "s3a://lambda-batch-data/processed/"
  
 print(f"Reading data from: {INPUT_PATH}")
  
-df = spark.read.option("multiLine", "true").json(INPUT_PATH)
+# ==========================================================
+
+# READ JSON FILES
+
+# ==========================================================
  
-print(f"Total Records: {df.count()}")
+df = (
+
+    spark.read
+
+    .option("recursiveFileLookup", "true")
+
+    .option("multiLine", "true")
+
+    .json(INPUT_PATH)
+
+)
  
-print("\nSchema:")
+print("\nSchema inferred by Spark:")
 
 df.printSchema()
  
-print("\nSample Data:")
+print("\nFiles detected by Spark:")
+
+files = df.inputFiles()
+ 
+for f in files:
+
+    print(f)
+ 
+print(f"\nTotal files found: {len(files)}")
+ 
+total_records = df.count()
+ 
+print(f"\nTotal Records : {total_records}")
+ 
+if total_records == 0:
+
+    print("\nERROR: Spark found no records.")
+
+    spark.stop()
+
+    exit()
+ 
+print("\nSample Data")
 
 df.show(10, truncate=False)
  
-# ---------------------------------------------------
+# ==========================================================
 
-# Aggregate Data
+# AGGREGATION
 
-# ---------------------------------------------------
-
+# ==========================================================
+ 
 result = (
 
     df.groupBy("line")
@@ -102,19 +138,17 @@ print("=" * 60)
  
 result.show(truncate=False)
  
-# ---------------------------------------------------
+# ==========================================================
 
-# Save Results
+# SAVE RESULTS
 
-# ---------------------------------------------------
-
-print(f"Writing results to: {OUTPUT_PATH}")
+# ==========================================================
+ 
+print(f"\nWriting results to {OUTPUT_PATH}")
  
 (
 
-    result
-
-    .coalesce(1)
+    result.coalesce(1)
 
     .write
 
@@ -124,9 +158,11 @@ print(f"Writing results to: {OUTPUT_PATH}")
 
 )
  
+print("\nOutput written successfully.")
+ 
 print("=" * 60)
 
-print("BATCH PROCESS COMPLETED SUCCESSFULLY")
+print("LUAS BATCH PROCESS COMPLETED")
 
 print("=" * 60)
  
