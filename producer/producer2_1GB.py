@@ -163,7 +163,7 @@ def start_luas_stream():
     print(f"Loaded {len(values)} journey values")
 
     batch = []
-    batch_number = 5319
+    batch_number = 3226
     generated_records = 0
     generated_bytes = 0
     start_time = time.time()
